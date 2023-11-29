@@ -1,5 +1,4 @@
-import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import { StarIcon } from "@heroicons/react/24/solid";
+import { ChevronRightIcon, StarIcon } from "@heroicons/react/24/solid";
 import { Card, Flex } from "@radix-ui/themes";
 
 type LegendItemProps = {
