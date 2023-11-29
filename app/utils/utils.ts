@@ -1,6 +1,6 @@
 import { Grid, NodeType } from "@/types/types";
 export const ROWS = 28;
-export const COLS = 45;
+export const COLS = 55;
 
 export const getNewGridWithWallToggled = (
   grid: Grid,
@@ -34,7 +34,7 @@ export const getNewGridWithWeightToggled = (
 
 export const createNode = (row: number, col: number): NodeType => {
   let isStartNode = row === 10 && col === 8;
-  let isFinishNode = row === 10 && col === 35;
+  let isFinishNode = row === 10 && col === 45;
   return {
     row,
     col,

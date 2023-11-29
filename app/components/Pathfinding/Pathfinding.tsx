@@ -1,7 +1,9 @@
 "use client";
 import { getInitialGrid } from "@/app/utils/utils";
+import { Flex } from "@radix-ui/themes";
 import { useState } from "react";
 import Grid from "../grid/Grid";
+import Legend from "../ui/legend/Legend";
 import Navbar from "../ui/navbar/Navbar";
 
 const Pathfinding = () => {
@@ -35,7 +37,24 @@ const Pathfinding = () => {
         toggleWeightsWalls={toggleWeightsWalls}
         isWeightToggled={isWeightToggled}
       />
-      <Grid isWeightToggled={isWeightToggled} grid={grid} setGrid={setGrid} />
+      <Flex
+        direction="row"
+        justify="start"
+        mx="auto"
+        gap="4"
+        wrap="nowrap"
+        width={"100%"}
+      >
+        <div className="p-6 flex flex-row gap-5">
+          <Grid
+            isWeightToggled={isWeightToggled}
+            grid={grid}
+            setGrid={setGrid}
+          />
+
+          <Legend />
+        </div>
+      </Flex>
     </>
   );
 };

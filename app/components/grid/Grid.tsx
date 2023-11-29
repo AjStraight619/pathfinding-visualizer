@@ -119,7 +119,7 @@ const Grid = ({ grid, setGrid, isWeightToggled }: GridProps) => {
   // };
 
   return (
-    <div className="mt-10">
+    <>
       <DndProvider backend={HTML5Backend}>
         <RadixGrid>
           {grid.map((row, rowIdx) => (
@@ -155,7 +155,7 @@ const Grid = ({ grid, setGrid, isWeightToggled }: GridProps) => {
           ))}
         </RadixGrid>
       </DndProvider>
-    </div>
+    </>
   );
 };
 

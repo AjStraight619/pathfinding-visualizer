@@ -1,5 +1,3 @@
-import "./navbar.css";
-
 import { Box, Button, Flex } from "@radix-ui/themes";
 import ToggleButton from "../navbar-buttons/ToggleButton";
 
@@ -20,12 +18,12 @@ const Navbar = ({
     <Box
       top={"0"}
       width={"100%"}
-      height={"6"}
-      className="border-b border-indigo-950"
+      height={"9"}
+      className="border-b border-slate-500"
     >
       <Flex
         direction={"row"}
-        justify={"center"}
+        justify={"end"}
         align={"center"}
         height={"100%"}
         gap={"3"}
