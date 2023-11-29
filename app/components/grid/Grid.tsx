@@ -22,6 +22,10 @@ const DndProvider = dynamic(
   { ssr: false }
 );
 
+/**
+ * Component representing the entire grid.
+ * @param {GridProps} props - The properties passed to the grid component.
+ */
 const Grid = ({ grid, setGrid, isWeightToggled }: GridProps) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [startNodePosition, setStartNodePosition] = useState({
@@ -30,10 +34,21 @@ const Grid = ({ grid, setGrid, isWeightToggled }: GridProps) => {
   });
   const [finishNodePosition, setFinishNodePosition] = useState({
     row: 10,
-    col: 35,
+    col: 45,
   });
 
+  /**
+   * Handles the mouse down event on a grid node.
+   * @param {number} row - The row index of the clicked node.
+   * @param {number} col - The column index of the clicked node.
+   */
   const handleMouseDown = (row: number, col: number) => {
+    if (
+      (row === startNodePosition.row && col === startNodePosition.col) ||
+      (row === finishNodePosition.row && finishNodePosition.col)
+    ) {
+      return;
+    }
     const newGrid = isWeightToggled
       ? getNewGridWithWeightToggled(grid, row, col)
       : getNewGridWithWallToggled(grid, row, col);
@@ -41,6 +56,11 @@ const Grid = ({ grid, setGrid, isWeightToggled }: GridProps) => {
     setIsMouseDown(true);
   };
 
+  /**
+   * Handles the mouse enter event on a grid node.
+   * @param {number} row - The row index of the entered node.
+   * @param {number} col - The column index of the entered node.
+   */
   const handleMouseEnter = (row: number, col: number) => {
     if (isMouseDown) {
       const newGrid = isWeightToggled
@@ -50,11 +70,23 @@ const Grid = ({ grid, setGrid, isWeightToggled }: GridProps) => {
     }
   };
 
+  /**
+   * Handles the mouse up event on the grid.
+   * @param {Event} e - The event object.
+   */
   const handleMouseUp = (e: any) => {
     e.preventDefault();
     setIsMouseDown(false);
   };
 
+  /**
+   * Handles dropping a node onto the grid.
+   * @param {number} startRow - The start row index of the drag operation.
+   * @param {number} startCol - The start column index of the drag operation.
+   * @param {number} endRow - The end row index of the drag operation.
+   * @param {number} endCol - The end column index of the drag operation.
+   * @param {string} nodeType - The type of the node being dragged.
+   */
   const handleDrop = (
     startRow: number,
     startCol: number,
@@ -62,7 +94,7 @@ const Grid = ({ grid, setGrid, isWeightToggled }: GridProps) => {
     endCol: number,
     nodeType: string
   ) => {
-    setIsMouseDown(false);
+    // setIsMouseDown(false);
     setGrid((prevGrid) => {
       return prevGrid.map((row, rowIndex) =>
         row.map((node, colIndex) => {
@@ -86,37 +118,7 @@ const Grid = ({ grid, setGrid, isWeightToggled }: GridProps) => {
     } else if (nodeType === "finish") {
       setFinishNodePosition({ row: endRow, col: endCol });
     }
-
-    console.log("After move - Start:", startNodePosition);
   };
-
-  // const getStartAndFinishNodePositions = (
-  //   grid: Grid,
-  //   startNodePosition: StartNodePosition,
-  //   finishNodePosition: FinishNodePosition
-  // ) => {
-  //   let startNode = { row: -1, col: -1 };
-  //   let finishNode = { row: -1, col: -1 };
-
-  //   grid.forEach((row, rowIdx) => {
-  //     row.forEach((_, colIdx) => {
-  //       if (
-  //         startNodePosition.row === rowIdx &&
-  //         startNodePosition.col === colIdx
-  //       ) {
-  //         startNode = { row: rowIdx, col: colIdx };
-  //       }
-  //       if (
-  //         finishNodePosition.row === rowIdx &&
-  //         finishNodePosition.col === colIdx
-  //       ) {
-  //         finishNode = { row: rowIdx, col: colIdx };
-  //       }
-  //     });
-  //   });
-
-  //   return { startNode, finishNode };
-  // };
 
   return (
     <>

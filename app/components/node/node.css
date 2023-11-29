@@ -1,35 +1,35 @@
 .node {
-    width: 25px;
-    height: 25px;
+    width: calc(80vw / 55); 
+    height: calc(80vw / 55);
     border: 1px solid slategray;
     transition: background-color 0.1s ease-in;
 }
 
 .node-row {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     width: 100%; 
   }
 
 .start-node {
-    width: 25px;
-    height: 25px;
+  width: calc(80vw / 55); 
+  height: calc(80vw / 55);
     
 }
 
 .wall-node {
-    width: 25px;
-    height: 25px;
+  width: calc(80vw / 55); 
+  height: calc(80vw / 55);
     background-color: gray;
     animation: bounce 0.6s forwards;
 
 }
 
 .weight-node {
-    width: 25px;
-    height: 25px;
+  width: calc(80vw / 55); 
+  height: calc(80vw / 55);
     background-color: red;
-    animation: bounce 0.6s forwards;
+    animation: bounce 0.3s forwards;
 }
 
 

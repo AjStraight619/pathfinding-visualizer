@@ -1,4 +1,4 @@
-import { FinishNodePosition, NodeType, StartNodePosition } from "@/types/types";
+import { FinishNodePosition, StartNodePosition } from "@/types/types";
 import { ChevronRightIcon, StarIcon } from "@heroicons/react/24/solid";
 import { useDrag, useDrop } from "react-dnd";
 import "./node.css";
@@ -9,6 +9,12 @@ type DragItem = {
 };
 
 type NodeProps = {
+  row: number;
+  col: number;
+  isStartNode: boolean;
+  isFinishNode: boolean;
+  isWall: boolean;
+  isWeight: boolean;
   handleMouseDown: (row: number, col: number) => void;
   handleMouseEnter: (row: number, col: number) => void;
   handleMouseUp: (e: any) => void;
@@ -21,8 +27,12 @@ type NodeProps = {
     endCol: number,
     nodeType: string
   ) => void;
-} & NodeType;
+};
 
+/**
+ * A draggable and droppable node component.
+ * @param {NodeProps} props - Properties passed to the Node component.
+ */
 const Node = ({
   row,
   col,
@@ -36,8 +46,12 @@ const Node = ({
   handleMouseDown,
   handleMouseEnter,
   handleMouseUp,
+  ...rest
 }: NodeProps) => {
-  const [, dragRef] = useDrag(
+  /**
+   * Configures the drag functionality for the node.
+   */
+  const [{ isDragging }, dragRef] = useDrag(
     () => ({
       type: "NODE",
       item: {
@@ -46,15 +60,20 @@ const Node = ({
         nodeType: isStartNode ? "start" : isFinishNode ? "finish" : "normal",
       },
       canDrag: isStartNode || isFinishNode,
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
     }),
     [row, col, isStartNode, isFinishNode]
   );
-
+  /**
+   * Configures the drop functionality for the node.
+   */
   const [, dropRef] = useDrop(
     {
       accept: "NODE",
-
       canDrop: (item: DragItem & { nodeType: string }) => {
+        // Conditions to determine whether the node can be dropped
         if (
           item.nodeType === "start" &&
           row === finishNodePosition.row &&
@@ -82,6 +101,10 @@ const Node = ({
     [row, col, startNodePosition, finishNodePosition]
   );
 
+  // useEffect(() => {
+  //   preview(getEmptyImage());
+  // }, [preview]);
+
   const extra = isFinishNode
     ? "node-finish"
     : isStartNode
@@ -96,7 +119,9 @@ const Node = ({
     <div
       id={`node-${row}-${col}`}
       ref={(node) => dragRef(dropRef(node))}
-      className={`node ${extra}`}
+      className={`node ${extra} ${
+        isStartNode || isFinishNode ? "cursor-grab" : ""
+      } ${isDragging ? "cursor-grabbing" : ""}`}
       onMouseDown={() => handleMouseDown(row, col)}
       onMouseEnter={() => handleMouseEnter(row, col)}
       onMouseUp={handleMouseUp}

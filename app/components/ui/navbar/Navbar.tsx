@@ -27,6 +27,7 @@ const Navbar = ({
         align={"center"}
         height={"100%"}
         gap={"3"}
+        px={"2"}
       >
         <ToggleButton handleClick={toggleWeightsWalls}>
           {isWeightToggled ? "Toggle Walls" : "Toggle Weights"}

@@ -5,6 +5,13 @@ export type NodeType = {
   isWeight: boolean;
   isStartNode: boolean;
   isFinishNode: boolean;
+  gScore: number;
+  hScore: number;
+  fScore: number;
+  weight: number;
+  isVisited: boolean;
+  isShortestPath: boolean;
+  parent: NodeType | null;
 };
 
 export type Grid = NodeType[][];
