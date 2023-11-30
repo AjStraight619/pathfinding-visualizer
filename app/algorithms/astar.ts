@@ -2,7 +2,9 @@ import { getNeighbors, getNeighborsForDiagonal } from "@/app/utils/utils";
 import { NodeType } from "@/types/types";
 import Heap from "heap";
 
-const aStar = (
+let counter = 0;
+
+export const aStar = (
   grid: NodeType[][],
   startNode: NodeType,
   finishNode: NodeType,
@@ -25,7 +27,6 @@ const aStar = (
     if (currentNode === null) {
       return [];
     }
-    console.log("Running a star algorithm");
 
     if (currentNode.isWall) continue;
 
@@ -36,7 +37,7 @@ const aStar = (
       currentNode.col === finishNode.col
     ) {
       finishNode.isVisited = true;
-      console.log("Found the finish node");
+      console.log(counter++);
       return Array.from(closedSet);
     }
 
@@ -78,5 +79,3 @@ const heuristic = (node: NodeType, finishNode: NodeType) => {
     Math.abs(node.row - finishNode.row) + Math.abs(node.col - finishNode.col)
   );
 };
-
-export default aStar;

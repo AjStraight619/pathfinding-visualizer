@@ -9,7 +9,6 @@ import { Grid as RadixGrid } from "@radix-ui/themes";
 import dynamic from "next/dynamic";
 import { SetStateAction, useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { VisitOrderMapType } from "../Pathfinding/Pathfinding";
 import Node from "../node/Node";
 
 type GridProps = {
@@ -20,8 +19,6 @@ type GridProps = {
   setStartNodePosition: React.Dispatch<SetStateAction<NodeType>>;
   finishNodePosition: NodeType;
   setFinishNodePosition: React.Dispatch<SetStateAction<NodeType>>;
-  // visitedNodesInOrder: NodeType[] | null;
-  visitOrderMap: VisitOrderMapType;
 };
 
 const DndProvider = dynamic(
@@ -37,18 +34,12 @@ const Grid = ({
   grid,
   setGrid,
   isWeightToggled,
-  // visitedNodesInOrder,
-  visitOrderMap,
+  startNodePosition,
+  setStartNodePosition,
+  finishNodePosition,
+  setFinishNodePosition,
 }: GridProps) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
-  const [startNodePosition, setStartNodePosition] = useState({
-    row: 10,
-    col: 8,
-  });
-  const [finishNodePosition, setFinishNodePosition] = useState({
-    row: 10,
-    col: 45,
-  });
 
   /**
    * Handles the mouse down event on a grid node.
@@ -126,9 +117,19 @@ const Grid = ({
     });
 
     if (nodeType === "start") {
-      setStartNodePosition({ row: endRow, col: endCol });
+      console.log("updating start node");
+
+      setStartNodePosition((prevPosition) => ({
+        ...prevPosition,
+        row: endRow,
+        col: endCol,
+      }));
     } else if (nodeType === "finish") {
-      setFinishNodePosition({ row: endRow, col: endCol });
+      setFinishNodePosition((prevPosition) => ({
+        ...prevPosition,
+        row: endRow,
+        col: endCol,
+      }));
     }
   };
 
@@ -148,11 +149,7 @@ const Grid = ({
                   isVisited,
                   isWeight,
                 } = node;
-                if (isVisited) {
-                  console.log("visited node during algorithm run");
-                }
-                const key = `${node.row}-${node.col}`;
-                const visitOrder = visitOrderMap?.get(key);
+
                 return (
                   <Node
                     key={`${rowIdx}-${nodeIdx}`}
@@ -163,8 +160,6 @@ const Grid = ({
                     isWall={isWall}
                     isWeight={isWeight}
                     isVisited={isVisited}
-                    visitOrder={visitOrder}
-                    // visitedNodesInOrder={visitedNodesInOrder}
                     startNodePosition={startNodePosition}
                     finishNodePosition={finishNodePosition}
                     handleMouseDown={handleMouseDown}

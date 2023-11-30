@@ -12,6 +12,10 @@ export type NodeType = {
   isVisited: boolean;
   isShortestPath: boolean;
   parent: NodeType | null;
+  isAnimated?: boolean;
+  distance: number;
+  totalDistance: number;
+  opened?: boolean;
 };
 
 export type Grid = NodeType[][];

@@ -72,6 +72,9 @@ export const createNode = (row: number, col: number): NodeType => {
     isShortestPath: false,
     weight: 1,
     parent: null,
+    isAnimated: false,
+    totalDistance: 0,
+    distance: 0,
   };
 };
 

@@ -99,6 +99,56 @@
       transform: scale(0.95, 1.05);
     }
   } */
+
+
+
+  @keyframes visitedAnimation {
+    0% {
+      transform: scale(0.3);
+      background: linear-gradient(
+        to right,
+        rgba(4, 209, 255, 0.7),
+        rgba(0, 245, 241, 0.991)
+      );
+      border-radius: 100%;
+    }
+    50% {
+      background: linear-gradient(
+        to right,
+        rgba(4, 209, 255, 0.7),
+        rgba(0, 232, 224, 0.75)
+      );
+    }
+    75% {
+      transform: scale(1.2);
+      background: linear-gradient(
+        to right,
+        rgba(4, 209, 255, 0.7),
+        rgba(4, 188, 255, 0.79)
+      );
+    }
+    100% {
+      transform: scale(1);
+      background: linear-gradient(
+        to right,
+        rgba(4, 209, 255, 0.7),
+        rgba(0, 245, 241, 0.991)
+      );
+    }
+  }
+
+
+  .node-visited {
+    animation-name: visitedAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    border: 1px solid rgb(175, 216, 248);
+  }
   
   
 
