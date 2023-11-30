@@ -133,16 +133,16 @@ const Node = ({
     boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
   }));
 
-  const [wallStyles, wallApi] = useSpring(() => ({
-    backgroundColor: isWall ? "grey" : "transparent",
-  }));
+  // const [wallStyles, wallApi] = useSpring(() => ({
+  //   backgroundColor: isWall ? "grey" : "transparent",
+  // }));
 
-  useEffect(() => {
-    // Update the spring if the wall state changes
-    wallApi.start({
-      backgroundColor: isWall ? "grey" : "transparent",
-    });
-  }, [isWall, wallApi]);
+  // useEffect(() => {
+  //   // Update the spring if the wall state changes
+  //   wallApi.start({
+  //     backgroundColor: isWall ? "grey" : "transparent",
+  //   });
+  // }, [isWall, wallApi]);
 
   useEffect(() => {
     if (isVisited && visitOrder !== undefined) {

@@ -1,7 +1,7 @@
 "use client";
 import { getInitialGrid } from "@/app/utils/utils";
 import { Flex } from "@radix-ui/themes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Grid from "../grid/Grid";
 import Legend from "../ui/legend/Legend";
 import Navbar from "../ui/navbar/Navbar";
@@ -49,6 +49,10 @@ const Pathfinding = () => {
     weight: 1,
     parent: null,
   });
+
+  useEffect(() => {
+    setGrid(getInitialGrid());
+  }, []);
 
   const toggleWeightsWalls = () => setIsWeightToggled(!isWeightToggled);
 
