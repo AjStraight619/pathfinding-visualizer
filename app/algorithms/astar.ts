@@ -2,8 +2,6 @@ import { getNeighbors, getNeighborsForDiagonal } from "@/app/utils/utils";
 import { NodeType } from "@/types/types";
 import Heap from "heap";
 
-let counter = 0;
-
 export const aStar = (
   grid: NodeType[][],
   startNode: NodeType,
@@ -36,8 +34,6 @@ export const aStar = (
       currentNode.row === finishNode.row &&
       currentNode.col === finishNode.col
     ) {
-      finishNode.isVisited = true;
-      console.log(counter++);
       return Array.from(closedSet);
     }
 
@@ -78,4 +74,17 @@ const heuristic = (node: NodeType, finishNode: NodeType) => {
   return (
     Math.abs(node.row - finishNode.row) + Math.abs(node.col - finishNode.col)
   );
+};
+
+export const getNodesInShortestPathOrder = (
+  finishNode: NodeType
+): NodeType[] => {
+  const nodesInShortestPathOrder: NodeType[] = [];
+  let currentNode: NodeType | null = finishNode;
+  console.log("Current node: ", currentNode);
+  while (currentNode !== null) {
+    nodesInShortestPathOrder.unshift(currentNode);
+    currentNode = currentNode.parent ? currentNode.parent : null;
+  }
+  return nodesInShortestPathOrder;
 };

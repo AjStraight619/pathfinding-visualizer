@@ -10,7 +10,6 @@ export type NodeType = {
   fScore: number;
   weight: number;
   isVisited: boolean;
-  isShortestPath: boolean;
   parent: NodeType | null;
   isAnimated?: boolean;
   distance: number;

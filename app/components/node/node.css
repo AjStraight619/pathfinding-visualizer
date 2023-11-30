@@ -32,6 +32,34 @@
     animation: bounce 0.3s forwards;
 }
 
+.node-visited {
+  animation-name: visitedAnimation;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+  border: 1px solid rgb(175, 216, 248);
+}
+
+.node-shortest-path {
+  animation-name: shortestPath;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+  background-color: rgba(0, 243, 53, 0.7);
+  border: 1px solid gray;
+  z-index: 2;
+}
+
+
+
 
 @keyframes bounce {
     0%, 100% {
@@ -41,64 +69,6 @@
       transform: translateY(-10px);
     }
   }
-
-
-  /* Example for smaller screens */
-
-
-
-
-  /* @keyframes fadeInDrop {
-    0% {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
- 
-
-  @keyframes popIn {
-    0% {
-      transform: scale(0);
-    }
-    80% {
-      transform: scale(1.1);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-
-
-  @keyframes flipIn {
-    from {
-      transform: rotateX(-90deg);
-      opacity: 0;
-    }
-    to {
-      transform: rotateX(0deg);
-      opacity: 1;
-    }
-  }
-  
-  @keyframes elasticStretch {
-    0%, 100% {
-      transform: scale(1, 1);
-    }
-    25% {
-      transform: scale(0.9, 1.1);
-    }
-    50% {
-      transform: scale(1.1, 0.9);
-    }
-    75% {
-      transform: scale(0.95, 1.05);
-    }
-  } */
 
 
 
@@ -136,19 +106,35 @@
       );
     }
   }
-
-
-  .node-visited {
-    animation-name: visitedAnimation;
-    animation-duration: 1.5s;
-    animation-timing-function: ease-out;
-    animation-delay: 0;
-    animation-direction: alternate;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    animation-play-state: running;
-    border: 1px solid rgb(175, 216, 248);
+  @keyframes shortestPath {
+    0% {
+      transform: scale(0.6);
+      background: linear-gradient(
+        to right,
+        rgba(0, 243, 53, 0.7),
+        rgba(17, 244, 59, 0.9)
+      );
+    }
+    50% {
+      transform: scale(1.2);
+      background: linear-gradient(
+        to right,
+        rgba(10, 245, 104, 0.8),
+        rgba(17, 244, 59, 0.9)
+      );
+    }
+    100% {
+      transform: scale(1);
+      background: linear-gradient(
+        to right,
+        rgba(0, 243, 53, 0.7),
+        rgba(17, 244, 59, 0.9)
+      );
+    }
   }
+
+
+
   
   
 

@@ -1,4 +1,5 @@
 "use client";
+import { getNodesInShortestPathOrder } from "@/app/algorithms/astar";
 import { getInitialGrid } from "@/app/utils/utils";
 import { Flex } from "@radix-ui/themes";
 import { useState } from "react";
@@ -23,7 +24,7 @@ type DirectionOfWall = {
   right: boolean;
 };
 
-type Algorithm = {
+export type Algorithm = {
   name: string;
   func: (
     grid: NodeType[][],
@@ -97,7 +98,6 @@ const Pathfinding = () => {
     isFinishNode: false,
     isWeight: false,
     isStartNode: true,
-    isShortestPath: false,
     isVisited: true,
     gScore: 0,
     hScore: 0,
@@ -114,7 +114,6 @@ const Pathfinding = () => {
     isFinishNode: true,
     isWeight: false,
     isStartNode: false,
-    isShortestPath: true,
     isVisited: false,
     gScore: 0,
     hScore: 0,
@@ -127,24 +126,34 @@ const Pathfinding = () => {
 
   const toggleWeightsWalls = () => setIsWeightToggled(!isWeightToggled);
 
-  const animate = (visitedNodesInOrder: NodeType[]): void => {
+  const animate = (
+    visitedNodesInOrder: NodeType[],
+    nodesInShortestPathOrder: NodeType[]
+  ): void => {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      if (i === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          animateShortestPath(nodesInShortestPathOrder);
+        }, 10 * i);
+        return;
+      }
       setTimeout(() => {
-        if (i === visitedNodesInOrder.length) {
-        } else {
-          // Add the temporary start node icon to the current node
-          const node = visitedNodesInOrder[i];
-          const element = document.getElementById(
-            `node-${node.row}-${node.col}`
-          );
-          if (element) {
-            element.classList.add("temp-start-icon");
-            if (element.classList.contains("node-weight")) {
-              element.className = "node node-weight node-visited";
-            } else {
-              element.className = "node node-visited";
-            }
-          }
+        const node = visitedNodesInOrder[i];
+        const element = document.getElementById(`node-${node.row}-${node.col}`);
+        if (element) {
+          element.className = "node node-visited";
+        }
+      }, 10 * i);
+    }
+  };
+
+  const animateShortestPath = (nodesInShortestPathOrder: NodeType[]) => {
+    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+      setTimeout(() => {
+        const node = nodesInShortestPathOrder[i];
+        const element = document.getElementById(`node-${node.row}-${node.col}`);
+        if (element) {
+          element.className = "node node-shortest-path";
         }
       }, 50 * i);
     }
@@ -184,10 +193,13 @@ const Pathfinding = () => {
     const visitedNodesInOrder = aStar(
       grid,
       startNodePosition,
-      finishNodePosition
+      finishNodePosition,
+      false
     );
-
-    animate(visitedNodesInOrder);
+    console.log("visited nodes in order", visitedNodesInOrder);
+    let nodesInShortestPathOrder = [];
+    nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNodePosition);
+    animate(visitedNodesInOrder, nodesInShortestPathOrder);
   };
 
   const calculateAdditionalInfo = (node: NodeType, grid: Grid) => {
@@ -227,6 +239,9 @@ const Pathfinding = () => {
         toggleWeightsWalls={toggleWeightsWalls}
         isWeightToggled={isWeightToggled}
         runAlgorithm={runAlgorithm}
+        algorithms={algorithms}
+        selectedAlgorithm={selectedAlgorithm}
+        setSelectedAlgorithm={setSelectedAlgorithm}
       />
       <Flex
         direction="row"

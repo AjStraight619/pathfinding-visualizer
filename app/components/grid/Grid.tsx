@@ -152,7 +152,7 @@ const Grid = ({
 
                 return (
                   <Node
-                    key={`${rowIdx}-${nodeIdx}`}
+                    key={nodeIdx}
                     row={row}
                     col={col}
                     isStartNode={isStartNode}

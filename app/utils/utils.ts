@@ -69,12 +69,11 @@ export const createNode = (row: number, col: number): NodeType => {
     hScore: Infinity,
     fScore: Infinity,
     isVisited: false,
-    isShortestPath: false,
     weight: 1,
     parent: null,
     isAnimated: false,
     totalDistance: 0,
-    distance: 0,
+    distance: Infinity,
   };
 };
 
@@ -140,6 +139,7 @@ export const getNodesInShortestPathOrder = (
 ): NodeType[] => {
   const nodesInShortestPathOrder: NodeType[] = [];
   let currentNode: NodeType | null = finishNode;
+  console.log("Current node: ", currentNode);
   while (currentNode !== null) {
     nodesInShortestPathOrder.unshift(currentNode);
     currentNode = currentNode.parent ? currentNode.parent : null;

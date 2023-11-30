@@ -5,7 +5,3 @@
 .element:active {
     cursor: grabbing;
   }
-
-  .rt-Button:hover {
-    cursor: pointer;
-  }
