@@ -6,6 +6,8 @@ type NavbarProps = {
   clearBoard: () => void;
   resetGrid: () => void;
   isWeightToggled: boolean;
+
+  runAlgorithm: () => void;
 };
 
 const Navbar = ({
@@ -13,6 +15,7 @@ const Navbar = ({
   isWeightToggled,
   clearBoard,
   resetGrid,
+  runAlgorithm,
 }: NavbarProps) => {
   return (
     <Box
@@ -38,6 +41,8 @@ const Navbar = ({
         <Button onClick={() => resetGrid()} type="button">
           Reset Grid
         </Button>
+
+        <Button onClick={runAlgorithm}>Run Algorithm</Button>
       </Flex>
     </Box>
   );

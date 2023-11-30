@@ -1,5 +1,5 @@
 import { Grid, NodeType } from "@/types/types";
-export const ROWS = 32;
+export const ROWS = 30;
 export const COLS = 55;
 
 /**
@@ -94,4 +94,52 @@ export const getInitialGrid = () => {
 
 const calculateRandomWeight = () => {
   return Math.floor(Math.random() * 10) + 1;
+};
+
+export const getNeighborsForDiagonal = (
+  node: NodeType,
+  grid: NodeType[][]
+): NodeType[] => {
+  const neighbors: NodeType[] = [];
+  const { row, col } = node;
+
+  if (row > 0) neighbors.push(grid[row - 1][col]);
+  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
+  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
+  if (col > 0) neighbors.push(grid[row][col - 1]);
+  if (row > 0 && col > 0) neighbors.push(grid[row - 1][col - 1]);
+  if (row < grid.length - 1 && col < grid[0].length - 1)
+    neighbors.push(grid[row + 1][col + 1]);
+  if (row > 0 && col < grid[0].length - 1)
+    neighbors.push(grid[row - 1][col + 1]);
+  if (row < grid.length - 1 && col > 0) neighbors.push(grid[row + 1][col - 1]);
+
+  return neighbors.filter((neighbor) => !neighbor.isVisited);
+};
+
+export const getNeighbors = (
+  node: NodeType,
+  grid: NodeType[][]
+): NodeType[] => {
+  const neighbors: NodeType[] = [];
+  const { row, col } = node;
+
+  if (row > 0) neighbors.push(grid[row - 1][col]);
+  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
+  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
+  if (col > 0) neighbors.push(grid[row][col - 1]);
+
+  return neighbors.filter((neighbor) => !neighbor.isVisited);
+};
+
+export const getNodesInShortestPathOrder = (
+  finishNode: NodeType
+): NodeType[] => {
+  const nodesInShortestPathOrder: NodeType[] = [];
+  let currentNode: NodeType | null = finishNode;
+  while (currentNode !== null) {
+    nodesInShortestPathOrder.unshift(currentNode);
+    currentNode = currentNode.parent ? currentNode.parent : null;
+  }
+  return nodesInShortestPathOrder;
 };

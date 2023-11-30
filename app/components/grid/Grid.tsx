@@ -4,17 +4,24 @@ import {
   getNewGridWithWallToggled,
   getNewGridWithWeightToggled,
 } from "@/app/utils/utils";
-import { Grid } from "@/types/types";
+import { Grid, NodeType } from "@/types/types";
 import { Grid as RadixGrid } from "@radix-ui/themes";
 import dynamic from "next/dynamic";
 import { SetStateAction, useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { VisitOrderMapType } from "../Pathfinding/Pathfinding";
 import Node from "../node/Node";
 
 type GridProps = {
   grid: Grid;
   setGrid: React.Dispatch<SetStateAction<Grid>>;
   isWeightToggled: boolean;
+  startNodePosition: NodeType;
+  setStartNodePosition: React.Dispatch<SetStateAction<NodeType>>;
+  finishNodePosition: NodeType;
+  setFinishNodePosition: React.Dispatch<SetStateAction<NodeType>>;
+  // visitedNodesInOrder: NodeType[] | null;
+  visitOrderMap: VisitOrderMapType;
 };
 
 const DndProvider = dynamic(
@@ -26,7 +33,13 @@ const DndProvider = dynamic(
  * Component representing the entire grid.
  * @param {GridProps} props - The properties passed to the grid component.
  */
-const Grid = ({ grid, setGrid, isWeightToggled }: GridProps) => {
+const Grid = ({
+  grid,
+  setGrid,
+  isWeightToggled,
+  // visitedNodesInOrder,
+  visitOrderMap,
+}: GridProps) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [startNodePosition, setStartNodePosition] = useState({
     row: 10,
@@ -94,7 +107,6 @@ const Grid = ({ grid, setGrid, isWeightToggled }: GridProps) => {
     endCol: number,
     nodeType: string
   ) => {
-    // setIsMouseDown(false);
     setGrid((prevGrid) => {
       return prevGrid.map((row, rowIndex) =>
         row.map((node, colIndex) => {
@@ -133,17 +145,26 @@ const Grid = ({ grid, setGrid, isWeightToggled }: GridProps) => {
                   isStartNode,
                   isFinishNode,
                   isWall,
+                  isVisited,
                   isWeight,
                 } = node;
+                if (isVisited) {
+                  console.log("visited node during algorithm run");
+                }
+                const key = `${node.row}-${node.col}`;
+                const visitOrder = visitOrderMap?.get(key);
                 return (
                   <Node
-                    key={nodeIdx}
+                    key={`${rowIdx}-${nodeIdx}`}
                     row={row}
                     col={col}
                     isStartNode={isStartNode}
                     isFinishNode={isFinishNode}
                     isWall={isWall}
                     isWeight={isWeight}
+                    isVisited={isVisited}
+                    visitOrder={visitOrder}
+                    // visitedNodesInOrder={visitedNodesInOrder}
                     startNodePosition={startNodePosition}
                     finishNodePosition={finishNodePosition}
                     handleMouseDown={handleMouseDown}

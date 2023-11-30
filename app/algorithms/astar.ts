@@ -1,6 +1,6 @@
+import { getNeighbors, getNeighborsForDiagonal } from "@/app/utils/utils";
 import { NodeType } from "@/types/types";
 import Heap from "heap";
-// import { getNeighbors, getNeighborsForDiagonal } from "../PathFindingUtils";
 
 const aStar = (
   grid: NodeType[][],
@@ -25,27 +25,32 @@ const aStar = (
     if (currentNode === null) {
       return [];
     }
+    console.log("Running a star algorithm");
 
     if (currentNode.isWall) continue;
 
     currentNode.isVisited = true;
 
-    if (currentNode === finishNode) {
+    if (
+      currentNode.row === finishNode.row &&
+      currentNode.col === finishNode.col
+    ) {
+      finishNode.isVisited = true;
+      console.log("Found the finish node");
       return Array.from(closedSet);
     }
 
     closedSet.add(currentNode);
 
-    // const neighbors = allowDiagonal
-    //   ? getNeighborsForDiagonal(currentNode, grid)
-    //   : getNeighbors(currentNode, grid);
-
-    const neighbors = getNeighbors(currentNode, grid);
+    const neighbors = allowDiagonal
+      ? getNeighborsForDiagonal(currentNode, grid)
+      : getNeighbors(currentNode, grid);
 
     for (const neighbor of neighbors) {
       if (closedSet.has(neighbor) || neighbor.isWall) {
         continue;
       }
+      console.log("Neighbor: ", neighbor);
 
       let tempGScore = currentNode.gScore + neighbor.weight;
 
@@ -75,15 +80,3 @@ const heuristic = (node: NodeType, finishNode: NodeType) => {
 };
 
 export default aStar;
-
-const getNeighbors = (node: NodeType, grid: NodeType[][]) => {
-  const neighbors = [];
-  const { row, col } = node;
-
-  if (row > 0) neighbors.push(grid[row - 1][col]);
-  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
-  if (col > 0) neighbors.push(grid[row][col - 1]);
-  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-
-  return neighbors.filter((neighbor) => !neighbor.isVisited);
-};
