@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
   Flex,
   IconButton,
+  Slider,
 } from "@radix-ui/themes";
 import Link from "next/link";
 import { SetStateAction, useState } from "react";
@@ -23,6 +24,9 @@ type NavbarProps = {
   algorithms: Algorithm[];
   selectedAlgorithm: Algorithm;
   setSelectedAlgorithm: React.Dispatch<SetStateAction<Algorithm>>;
+  setSpeed: React.Dispatch<SetStateAction<number[]>>;
+  speed: number[];
+  handleSpeedChange: (newSpeed: number[]) => void;
 };
 
 const Navbar = ({
@@ -34,6 +38,8 @@ const Navbar = ({
   algorithms,
   selectedAlgorithm,
   setSelectedAlgorithm,
+  setSpeed,
+  speed,
 }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -84,6 +90,15 @@ const Navbar = ({
           <ToggleButton handleClick={toggleWeightsWalls}>
             {isWeightToggled ? "Toggle Walls" : "Toggle Weights"}
           </ToggleButton>
+          <div className="flex flex-col">
+            <Slider
+              value={speed}
+              defaultValue={[50]}
+              max={100}
+              step={1}
+              onValueChange={() => setSpeed(speed)}
+            />
+          </div>
         </Flex>
 
         {/* Right-aligned items */}

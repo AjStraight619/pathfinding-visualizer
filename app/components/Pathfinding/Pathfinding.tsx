@@ -1,8 +1,7 @@
 "use client";
-import { getNodesInShortestPathOrder } from "@/app/algorithms/astar";
-import { getInitialGrid } from "@/app/utils/utils";
+import { getInitialGrid, getNodesInShortestPathOrder } from "@/app/utils/utils";
 import { Flex } from "@radix-ui/themes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Grid from "../grid/Grid";
 import Legend from "../ui/legend/Legend";
 import Navbar from "../ui/navbar/Navbar";
@@ -16,6 +15,8 @@ import { dijkstra } from "@/app/algorithms/dijkstra";
 import { greedyBFS } from "@/app/algorithms/greedyBFS";
 import { jumpPointSearch } from "@/app/algorithms/jumpPointSearch";
 import { NodeType } from "@/types/types";
+
+import { useNodeAnimations } from "@/app/hooks/useNodeAnimations";
 
 type DirectionOfWall = {
   up: boolean;
@@ -87,9 +88,22 @@ const Pathfinding = () => {
     jumpPointSearchAlgorithm,
   ];
   const [isWeightToggled, setIsWeightToggled] = useState(false);
-  const [grid, setGrid] = useState<Grid>(getInitialGrid());
+  const [allowDiagonalMovement, setAllowDiagonalMovement] = useState(false);
+  const [visitedNodesInOrder, setVisitedNodesInOrder] = useState<
+    NodeType[] | null
+  >(null);
+  const [nodesInShortestPathOrder, setNodesInShortestPathOrder] = useState<
+    NodeType[] | null
+  >(null);
+  const [grid, setGrid] = useState<NodeType[][]>([]);
   const [selectedAlgorithm, setSelectedAlgorithm] =
     useState<Algorithm>(aStarAlgorithm);
+  // initial state = fast
+  const [speed, setSpeed] = useState([10]);
+
+  useEffect(() => {
+    setGrid(getInitialGrid());
+  }, []);
 
   const [startNodePosition, setStartNodePosition] = useState<NodeType>({
     row: 10,
@@ -126,38 +140,15 @@ const Pathfinding = () => {
 
   const toggleWeightsWalls = () => setIsWeightToggled(!isWeightToggled);
 
-  const animate = (
-    visitedNodesInOrder: NodeType[],
-    nodesInShortestPathOrder: NodeType[]
-  ): void => {
-    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
-      if (i === visitedNodesInOrder.length) {
-        setTimeout(() => {
-          animateShortestPath(nodesInShortestPathOrder);
-        }, 10 * i);
-        return;
-      }
-      setTimeout(() => {
-        const node = visitedNodesInOrder[i];
-        const element = document.getElementById(`node-${node.row}-${node.col}`);
-        if (element) {
-          element.className = "node node-visited";
-        }
-      }, 10 * i);
-    }
+  const handleSpeedChange = (newSpeed: number[]) => {
+    console.log("New speed from slider: ", newSpeed);
+    setSpeed(newSpeed);
   };
 
-  const animateShortestPath = (nodesInShortestPathOrder: NodeType[]) => {
-    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
-      setTimeout(() => {
-        const node = nodesInShortestPathOrder[i];
-        const element = document.getElementById(`node-${node.row}-${node.col}`);
-        if (element) {
-          element.className = "node node-shortest-path";
-        }
-      }, 50 * i);
-    }
-  };
+  const {} = useNodeAnimations({
+    visitedNodesInOrder,
+    nodesInShortestPathOrder,
+  });
 
   const clearBoard = () => {
     setGrid((prevGrid) =>
@@ -166,13 +157,10 @@ const Pathfinding = () => {
           const element = document.getElementById(
             `node-${node.row}-${node.col}`
           );
-          element?.classList.remove("node-visited");
+          element?.classList.remove("node-visited", "node-shortest-path");
           return {
             ...node,
             isVisited: false,
-            isAnimated: false,
-            isWeight: false,
-            weight: 1,
           };
         })
       )
@@ -184,22 +172,25 @@ const Pathfinding = () => {
     grid.forEach((row) =>
       row.map((node) => {
         const element = document.getElementById(`node-${node.row}-${node.col}`);
-        element?.classList.remove("node-visited");
+        element?.classList.remove("node-visited", "node-shortest-path");
       })
     );
   };
 
   const runAlgorithm = () => {
-    const visitedNodesInOrder = aStar(
+    const startNode = grid[startNodePosition.row][startNodePosition.col];
+    const finishNode = grid[finishNodePosition.row][finishNodePosition.col];
+    const visitedNodesInOrder = selectedAlgorithm.func(
       grid,
-      startNodePosition,
-      finishNodePosition,
-      false
+      startNode,
+      finishNode,
+      allowDiagonalMovement
     );
-    console.log("visited nodes in order", visitedNodesInOrder);
-    let nodesInShortestPathOrder = [];
-    nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNodePosition);
-    animate(visitedNodesInOrder, nodesInShortestPathOrder);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    if (visitedNodesInOrder && nodesInShortestPathOrder) {
+      setVisitedNodesInOrder(visitedNodesInOrder);
+      setNodesInShortestPathOrder(nodesInShortestPathOrder);
+    }
   };
 
   const calculateAdditionalInfo = (node: NodeType, grid: Grid) => {
@@ -232,7 +223,7 @@ const Pathfinding = () => {
   };
 
   return (
-    <>
+    <Flex direction={"column"}>
       <Navbar
         resetGrid={resetGrid}
         clearBoard={clearBoard}
@@ -242,6 +233,9 @@ const Pathfinding = () => {
         algorithms={algorithms}
         selectedAlgorithm={selectedAlgorithm}
         setSelectedAlgorithm={setSelectedAlgorithm}
+        setSpeed={setSpeed}
+        speed={speed}
+        handleSpeedChange={handleSpeedChange}
       />
       <Flex
         direction="row"
@@ -265,7 +259,7 @@ const Pathfinding = () => {
           <Legend />
         </div>
       </Flex>
-    </>
+    </Flex>
   );
 };
 
