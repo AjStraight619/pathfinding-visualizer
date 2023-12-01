@@ -5,3 +5,9 @@
 .element:active {
     cursor: grabbing;
   }
+
+  @layer utilities {
+    .cursor-grab:active {
+      cursor: grabbing;
+    }
+  }

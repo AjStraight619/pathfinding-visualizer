@@ -1,4 +1,4 @@
-import { FinishNodePosition, StartNodePosition } from "@/types/types";
+import { FinishNodePosition, StartNodePosition } from "@/app/types/types";
 import { ChevronRightIcon, StarIcon } from "@heroicons/react/24/solid";
 import { useDrag, useDrop } from "react-dnd";
 import "./node.css";
@@ -42,13 +42,10 @@ const Node = ({
   isWeight,
   startNodePosition,
   finishNodePosition,
-  isVisited,
-
   onDrop,
   handleMouseDown,
   handleMouseEnter,
   handleMouseUp,
-  ...rest
 }: NodeProps) => {
   /**
    * Configures the drag functionality for the node.
@@ -106,30 +103,6 @@ const Node = ({
     [row, col, startNodePosition, finishNodePosition]
   );
 
-  // useEffect(() => {
-  //   if (isVisited && visitOrder !== undefined) {
-  //     console.log("use effect running when creating walls...");
-  //     const delay = visitOrder * 10; // Adjust the delay as needed
-  //     visitedApi.start({
-  //       transform: "scale(1)", // Slightly scale up the node
-  //       backgroundColor: "indigo", // Change the background color
-  //       boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)", // Add a shadow effect
-  //       delay,
-  //       config: { tension: 300 }, // Adjust the spring tension for a snappier effect
-  //     });
-  //   }
-  // }, [isVisited, visitedApi, visitOrder]);
-
-  // if (isCurrentlyAnimatingNode) {
-  //   return (
-  //     <AnimatedNode
-  //       node={node}
-  //       {...rest}
-  //       visitedNodesInOrder={visitedNodesInOrder}
-  //     />
-  //   );
-  // }
-
   const extra = isFinishNode
     ? "node-finish"
     : isStartNode
@@ -154,7 +127,6 @@ const Node = ({
       >
         {isStartNode && <ChevronRightIcon />}
         {isFinishNode && <StarIcon />}
-        {/* Other node content */}
       </div>
     </>
   );

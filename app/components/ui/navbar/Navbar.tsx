@@ -1,4 +1,5 @@
 "use client";
+import { Algorithm } from "@/app/types/types";
 import { CaretDownIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import {
   Box,
@@ -8,12 +9,11 @@ import {
   DropdownMenuTrigger,
   Flex,
   IconButton,
-  Slider,
 } from "@radix-ui/themes";
 import Link from "next/link";
-import { SetStateAction, useState } from "react";
-import { Algorithm } from "../../Pathfinding/Pathfinding";
+import React, { SetStateAction } from "react";
 import ToggleButton from "../navbar-buttons/ToggleButton";
+import { DelaySlider } from "../slider/DelaySlider";
 
 type NavbarProps = {
   toggleWeightsWalls: () => void;
@@ -25,8 +25,6 @@ type NavbarProps = {
   selectedAlgorithm: Algorithm;
   setSelectedAlgorithm: React.Dispatch<SetStateAction<Algorithm>>;
   setSpeed: React.Dispatch<SetStateAction<number[]>>;
-  speed: number[];
-  handleSpeedChange: (newSpeed: number[]) => void;
 };
 
 const Navbar = ({
@@ -39,9 +37,7 @@ const Navbar = ({
   selectedAlgorithm,
   setSelectedAlgorithm,
   setSpeed,
-  speed,
 }: NavbarProps) => {
-  const [isOpen, setIsOpen] = useState(false);
   return (
     <Box
       top={"0"}
@@ -58,7 +54,7 @@ const Navbar = ({
         height={"100%"}
       >
         {/* Left-aligned items */}
-        <Flex justify={"start"} align={"center"} gap={"2"}>
+        <Flex justify={"start"} align={"center"} gap={"2"} width={"100%"}>
           <Button onClick={runAlgorithm}>
             Visualize {selectedAlgorithm.name}
           </Button>
@@ -90,14 +86,8 @@ const Navbar = ({
           <ToggleButton handleClick={toggleWeightsWalls}>
             {isWeightToggled ? "Toggle Walls" : "Toggle Weights"}
           </ToggleButton>
-          <div className="flex flex-col">
-            <Slider
-              value={speed}
-              defaultValue={[50]}
-              max={100}
-              step={1}
-              onValueChange={() => setSpeed(speed)}
-            />
+          <div>
+            <DelaySlider setSpeed={setSpeed} />
           </div>
         </Flex>
 

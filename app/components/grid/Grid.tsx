@@ -1,24 +1,24 @@
 "use client";
 import "@/app/components/node/node.css";
+import { NodeType } from "@/app/types/types";
 import {
   getNewGridWithWallToggled,
   getNewGridWithWeightToggled,
 } from "@/app/utils/utils";
-import { Grid, NodeType } from "@/types/types";
 import { Grid as RadixGrid } from "@radix-ui/themes";
 import dynamic from "next/dynamic";
-import { SetStateAction, useState } from "react";
+import React, { SetStateAction, useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Node from "../node/Node";
 
 type GridProps = {
-  grid: Grid;
-  setGrid: React.Dispatch<SetStateAction<Grid>>;
   isWeightToggled: boolean;
   startNodePosition: NodeType;
   setStartNodePosition: React.Dispatch<SetStateAction<NodeType>>;
   finishNodePosition: NodeType;
   setFinishNodePosition: React.Dispatch<SetStateAction<NodeType>>;
+  grid: NodeType[][];
+  setGrid: React.Dispatch<SetStateAction<NodeType[][]>>;
 };
 
 const DndProvider = dynamic(
@@ -27,17 +27,28 @@ const DndProvider = dynamic(
 );
 
 /**
- * Component representing the entire grid.
+ * The Grid component represents the visualization area for pathfinding algorithms.
+ * It renders a grid of nodes, where each node can be a start node, finish node, wall, or weight.
+ * This component manages the logic for mouse events to update the grid state and for drag-and-drop functionality.
+ *
  * @param {GridProps} props - The properties passed to the grid component.
+ *      - isWeightToggled: boolean indicating whether weights or walls are being toggled
+ *      - startNodePosition: current position of the start node
+ *      - setStartNodePosition: function to update the start node position
+ *      - finishNodePosition: current position of the finish node
+ *      - setFinishNodePosition: function to update the finish node position
+ *      - grid: the current state of the grid
+ *      - setGrid: function to update the grid state
  */
+
 const Grid = ({
-  grid,
-  setGrid,
   isWeightToggled,
   startNodePosition,
   setStartNodePosition,
   finishNodePosition,
   setFinishNodePosition,
+  grid,
+  setGrid,
 }: GridProps) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
 
@@ -78,7 +89,7 @@ const Grid = ({
    * Handles the mouse up event on the grid.
    * @param {Event} e - The event object.
    */
-  const handleMouseUp = (e: any) => {
+  const handleMouseUp = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     setIsMouseDown(false);
   };
@@ -177,4 +188,4 @@ const Grid = ({
   );
 };
 
-export default Grid;
+export default React.memo(Grid);

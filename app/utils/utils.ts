@@ -1,4 +1,4 @@
-import { Grid, NodeType } from "@/types/types";
+import { Grid, NodeType } from "@/app/types/types";
 export const ROWS = 30;
 export const COLS = 55;
 

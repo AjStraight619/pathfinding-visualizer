@@ -28,3 +28,14 @@ export type FinishNodePosition = {
   row: number;
   col: number;
 };
+
+export type Algorithm = {
+  name: string;
+  func: (
+    grid: NodeType[][],
+    startNode: NodeType,
+    finishNode: NodeType,
+    allowDiagonal: boolean,
+    beamWidth?: number
+  ) => NodeType[];
+};

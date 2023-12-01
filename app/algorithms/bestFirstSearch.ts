@@ -1,5 +1,5 @@
+import { NodeType } from "@/app/types/types";
 import { getNeighbors, getNeighborsForDiagonal } from "@/app/utils/utils";
-import { NodeType } from "@/types/types";
 
 export const bestFirstSearch = (
   grid: NodeType[][],

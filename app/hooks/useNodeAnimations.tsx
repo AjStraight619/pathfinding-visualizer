@@ -1,10 +1,16 @@
-import { NodeType } from "@/types/types";
+import { NodeType } from "@/app/types/types";
 import { useSpring } from "@react-spring/web";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect } from "react";
 
 type useNodeAnimationsProps = {
   visitedNodesInOrder: NodeType[] | null;
+  setVisitedNodesInOrder: React.Dispatch<SetStateAction<NodeType[] | null>>;
   nodesInShortestPathOrder: NodeType[] | null;
+  setNodesInShortestPathOrder: React.Dispatch<
+    SetStateAction<NodeType[] | null>
+  >;
+  speed: number[];
+  didResetGrid: boolean;
 };
 
 /**
@@ -20,56 +26,71 @@ type useNodeAnimationsProps = {
 export const useNodeAnimations = ({
   visitedNodesInOrder,
   nodesInShortestPathOrder,
+  speed,
+  didResetGrid,
 }: useNodeAnimationsProps): object => {
-  const [currentNodePosition, setCurrentNodePosition] =
-    useState<NodeType | null>(
-      visitedNodesInOrder && visitedNodesInOrder.length > 0
-        ? visitedNodesInOrder[0]
-        : null
-    );
-
+  const animationSpeed = speed[0];
   const [spring, springApi] = useSpring(() => ({
-    from: { x: currentNodePosition?.row, y: currentNodePosition?.col },
+    from: {
+      x: visitedNodesInOrder?.[0]?.row ?? 0,
+      y: visitedNodesInOrder?.[0]?.col ?? 0,
+    },
   }));
 
   useEffect(() => {
-    console.log("spring animation initiated");
-    console.log(spring);
-  }, [springApi, spring]);
+    if (didResetGrid) {
+      return;
+    }
 
-  useEffect(() => {
+    const timeouts: number[] = [];
+
     if (visitedNodesInOrder && nodesInShortestPathOrder) {
       visitedNodesInOrder.forEach((node, nodeIdx) => {
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
           const element = document.getElementById(
             `node-${node.row}-${node.col}`
           );
           springApi.start({
-            from: { x: currentNodePosition?.row, y: currentNodePosition?.col },
+            from: {
+              x: visitedNodesInOrder?.[0]?.row ?? 0,
+              y: visitedNodesInOrder?.[0]?.col ?? 0,
+            },
             to: { x: node.row, y: node.col },
           });
-          if (element) {
-            element.classList.add("node-visited");
-          }
-        }, nodeIdx * 50);
+          element?.classList.add("node-visited");
+        }, animationSpeed * nodeIdx) as unknown as number;
+        timeouts.push(timeoutId);
       });
 
-      // Schedule the animation of the shortest path after all visited nodes have been animated
-      setTimeout(() => {
+      const pathAnimationDelay = visitedNodesInOrder.length * animationSpeed;
+      const pathAnimationTimeoutId = setTimeout(() => {
         nodesInShortestPathOrder.forEach((node, nodeIdx) => {
-          setTimeout(() => {
+          const timeoutId = setTimeout(() => {
             const element = document.getElementById(
               `node-${node.row}-${node.col}`
             );
-            if (element) {
-              element.classList.add("node-shortest-path");
-            }
-          }, nodeIdx * 25);
+            element?.classList.add("node-shortest-path");
+          }, nodeIdx * animationSpeed) as unknown as number;
+          timeouts.push(timeoutId);
         });
-      }, visitedNodesInOrder.length * 50);
+      }, pathAnimationDelay) as unknown as number;
+      timeouts.push(pathAnimationTimeoutId);
     }
-  }, [visitedNodesInOrder, nodesInShortestPathOrder]);
 
-  // return spring animations here, might create context to avoid excessive prop drilling
-  return {};
+    // Cleanup function
+    return () => {
+      timeouts.forEach(clearTimeout);
+    };
+  }, [
+    visitedNodesInOrder,
+    nodesInShortestPathOrder,
+    springApi,
+    animationSpeed,
+    didResetGrid,
+  ]);
+
+  return {
+    spring,
+    springApi,
+  };
 };
