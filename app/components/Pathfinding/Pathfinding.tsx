@@ -175,7 +175,7 @@ const Pathfinding = () => {
         wrap="nowrap"
         width={"100%"}
       >
-        <div className="p-6 flex flex-row gap-5">
+        <div className="p-3 flex flex-row gap-5">
           <Grid
             isWeightToggled={isWeightToggled}
             startNodePosition={startNodePosition}

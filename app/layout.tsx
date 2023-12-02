@@ -17,8 +17,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Theme appearance="dark" accentColor="indigo" grayColor="sand">
+      <body
+        className={`${inter.className} bg-gray-50 text-gray-950 relative pt-28 sm:pt-36 dark:bg-gray-900 dark:text-gray-50 dark:text-opacity-90`}
+      >
+        <div className="bg-[#23395d] absolute top-[-4rem] -z-10 right-[15rem] h-[25rem] w-[25rem] rounded-full blur-[8rem] sm:w-[50rem] dark:bg-[#1b2c48]"></div>
+        <div className="bg-[#1e305f] absolute top-[-2rem] -z-10 left-[-28rem] h-[25rem] w-[40rem] rounded-full blur-[8rem] sm:w-[50rem] md:left-[-25rem] lg:left-[-20rem] xl:left-[-10rem] 2xl:left-[-3rem] dark:bg-[#162238]"></div>
+
+        <Theme accentColor="indigo" grayColor="sand">
           {children}
         </Theme>
       </body>
