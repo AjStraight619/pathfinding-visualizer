@@ -1,5 +1,6 @@
 import { FinishNodePosition, StartNodePosition } from "@/lib/types";
 import { ChevronRightIcon, StarIcon } from "@heroicons/react/24/solid";
+import React from "react";
 import { useDrag, useDrop } from "react-dnd";
 import "./node.css";
 type DragItem = {
@@ -132,4 +133,4 @@ const Node = ({
   );
 };
 
-export default Node;
+export default React.memo(Node);

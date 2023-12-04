@@ -15,6 +15,7 @@ import Button from "./ui/Button";
 import { motion } from "framer-motion";
 
 const GridController = () => {
+  console.log("Navbar is re rendering");
   const [speed, setSpeed] = useState<number[]>([35]);
   const [open, setOpen] = useState(false);
   const { grid, setGrid, didResetGrid, setDidResetGrid } = useGridContext();

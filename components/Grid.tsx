@@ -8,7 +8,7 @@ import {
   getNewGridWithWeightToggled,
 } from "@/lib/utils";
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 type GridProps = {
@@ -36,7 +36,9 @@ const DndProvider = dynamic(
  */
 
 const Grid = ({ isWeightToggled }: GridProps) => {
+  console.log("grid component is re rendering");
   const { grid, setGrid } = useGridContext();
+
   const {
     setStartNodePosition,
     setFinishNodePosition,
@@ -51,43 +53,54 @@ const Grid = ({ isWeightToggled }: GridProps) => {
    * @param {number} row - The row index of the clicked node.
    * @param {number} col - The column index of the clicked node.
    */
-  const handleMouseDown = (row: number, col: number) => {
-    if (
-      (row === startNodePosition.row && col === startNodePosition.col) ||
-      (row === finishNodePosition.row && finishNodePosition.col)
-    ) {
-      return;
-    }
-    const newGrid = isWeightToggled
-      ? getNewGridWithWeightToggled(grid, row, col)
-      : getNewGridWithWallToggled(grid, row, col);
-    setGrid(newGrid);
-    setIsMouseDown(true);
-  };
+  const handleMouseDown = useCallback(
+    (row: number, col: number) => {
+      console.log("handle mouse down called");
+      if (
+        (row === startNodePosition.row && col === startNodePosition.col) ||
+        (row === finishNodePosition.row && col === finishNodePosition.col)
+      ) {
+        return;
+      }
+      const newGrid = isWeightToggled
+        ? getNewGridWithWeightToggled(grid, row, col)
+        : getNewGridWithWallToggled(grid, row, col);
+      setGrid(newGrid);
+      setIsMouseDown(true);
+    },
+    [startNodePosition, finishNodePosition, isWeightToggled, grid, setGrid]
+  );
 
   /**
    * Handles the mouse enter event on a grid node.
    * @param {number} row - The row index of the entered node.
    * @param {number} col - The column index of the entered node.
    */
-  const handleMouseEnter = (row: number, col: number) => {
-    if (isMouseDown) {
-      const newGrid = isWeightToggled
-        ? getNewGridWithWeightToggled(grid, row, col)
-        : getNewGridWithWallToggled(grid, row, col);
-      setLocalGrid(newGrid);
-    }
-  };
+  const handleMouseEnter = useCallback(
+    (row: number, col: number) => {
+      console.log("handle mouse enter called");
+      if (isMouseDown) {
+        const newGrid = isWeightToggled
+          ? getNewGridWithWeightToggled(grid, row, col)
+          : getNewGridWithWallToggled(grid, row, col);
+        setLocalGrid(newGrid);
+      }
+    },
+    [isMouseDown, isWeightToggled, grid]
+  );
 
   /**
    * Handles the mouse up event on the grid.
    * @param {Event} e - The event object.
    */
-  const handleMouseUp = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    setIsMouseDown(false);
-    setGrid(localGrid);
-  };
+  const handleMouseUp = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      e.preventDefault();
+      setIsMouseDown(false);
+      setGrid(localGrid);
+    },
+    [localGrid, setGrid]
+  );
 
   /**
    * Handles dropping a node onto the grid.

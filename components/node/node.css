@@ -21,7 +21,6 @@
   width: calc(80vw / 55); 
   height: calc(80vw / 55);
     background-color: gray;
-    animation: bounce 0.1s forwards;
 
 }
 
