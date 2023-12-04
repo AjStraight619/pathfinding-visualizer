@@ -36,15 +36,15 @@ const DndProvider = dynamic(
  */
 
 const Grid = ({ isWeightToggled }: GridProps) => {
-  const [isMouseDown, setIsMouseDown] = useState(false);
   const { grid, setGrid } = useGridContext();
-  const [localGrid, setLocalGrid] = useState([...grid]);
   const {
     setStartNodePosition,
     setFinishNodePosition,
     startNodePosition,
     finishNodePosition,
   } = useNodeContext();
+  const [localGrid, setLocalGrid] = useState([...grid]);
+  const [isMouseDown, setIsMouseDown] = useState(false);
 
   /**
    * Handles the mouse down event on a grid node.

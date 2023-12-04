@@ -1,8 +1,9 @@
 import { ChevronRightIcon, StarIcon } from "@heroicons/react/24/solid";
+import { FaSquare } from "react-icons/fa";
 
 type LegendItemProps = {
-  icon: React.ReactNode;
-  children: React.ReactNode;
+  icon?: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
 };
 
@@ -28,9 +29,18 @@ const Legend = () => {
         <LegendItem icon={<StarIcon className="w-6 h-6" />}>
           Finish Node
         </LegendItem>
-        {/* <LegendItem>hello</LegendItem>
-          <LegendItem>hello</LegendItem>
-          <LegendItem>hello</LegendItem> */}
+        <LegendItem icon={<FaSquare />} className="w-6 h-6 bg-blue-100">
+          Visited Node
+        </LegendItem>
+        <LegendItem icon={<FaSquare />} className="w-6 h-6 bg-blue-100">
+          Shortest Path Node
+        </LegendItem>
+        <LegendItem icon={<FaSquare />} className="w-6 h-6 bg-blue-100">
+          Wall Node
+        </LegendItem>
+        <LegendItem icon={<FaSquare />} className="w-6 h-6 bg-blue-100">
+          Weight Node
+        </LegendItem>
       </div>
     </div>
   );

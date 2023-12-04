@@ -29,6 +29,7 @@ const GridController = () => {
   >(null);
 
   const runAlgorithm = () => {
+    setDidResetGrid(false);
     const startNode = grid[startNodePosition.row][startNodePosition.col];
     const finishNode = grid[finishNodePosition.row][finishNodePosition.col];
     const visitedNodesInOrder = selectedAlgorithm.func(

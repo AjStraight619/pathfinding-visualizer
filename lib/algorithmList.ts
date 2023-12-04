@@ -8,53 +8,71 @@ import { dijkstra } from "../algorithms/dijkstra";
 import { greedyBFS } from "../algorithms/greedyBFS";
 import { jumpPointSearch } from "../algorithms/jumpPointSearch";
 
-const aStarAlgorithm: Algorithm = {
-  name: "A* Search",
-  func: aStar,
-};
-
-const beamSearchAlgorithm: Algorithm = {
-  name: "Beam Search",
-  func: beamSearch,
-};
-
-const bestFirstSearchAlgorithm: Algorithm = {
-  name: "Best First Search",
-  func: bestFirstSearch,
-};
-
-const breadthFirstSearchAlgorithm: Algorithm = {
-  name: "Breadth First Search",
-  func: breadthFirstSearch,
-};
-
-const depthFirstSearchAlgorithm: Algorithm = {
-  name: "Depth First Search",
-  func: depthFirstSearch,
-};
-
-const dijkstraAlgorithm: Algorithm = {
-  name: "Dijkstra's Algorithm",
-  func: dijkstra,
-};
-
-const greedyBFSAlgorithm: Algorithm = {
-  name: "Greedy Best First Search",
-  func: greedyBFS,
-};
-
-const jumpPointSearchAlgorithm: Algorithm = {
-  name: "Jump Point Search",
-  func: jumpPointSearch,
-};
-
-export const algorithms: Algorithm[] = [
-  aStarAlgorithm,
-  beamSearchAlgorithm,
-  bestFirstSearchAlgorithm,
-  breadthFirstSearchAlgorithm,
-  depthFirstSearchAlgorithm,
-  dijkstraAlgorithm,
-  greedyBFSAlgorithm,
-  jumpPointSearchAlgorithm,
+const algorithms: Algorithm[] = [
+  {
+    name: "A* Search",
+    func: aStar,
+    description:
+      "A* Search algorithm combines features of uniform-cost search and pure heuristic search to efficiently compute optimal paths.",
+    weighted: true,
+    guaranteesShortestPath: true,
+  },
+  {
+    name: "Beam Search",
+    func: beamSearch,
+    description:
+      "Beam Search is a heuristic search algorithm that explores a graph by expanding the most promising node in a limited set.",
+    weighted: false,
+    guaranteesShortestPath: false,
+  },
+  {
+    name: "Best First Search",
+    func: bestFirstSearch,
+    description:
+      "Best-First Search is a search algorithm which explores a graph by expanding the most promising node chosen according to a specified rule.",
+    weighted: false,
+    guaranteesShortestPath: false,
+  },
+  {
+    name: "Breadth First Search",
+    func: breadthFirstSearch,
+    description:
+      "Breadth-First Search (BFS) is an algorithm for traversing or searching tree or graph data structures, starting at the tree root or some arbitrary node of a graph and exploring the neighbor nodes at the present depth prior to moving on to the nodes at the next depth level.",
+    weighted: false,
+    guaranteesShortestPath: true,
+  },
+  {
+    name: "Depth First Search",
+    func: depthFirstSearch,
+    description:
+      "Depth First Search is an algorithm for searching a graph or tree data structure. It starts at the root and explores as far as possible along each branch before backtracking.",
+    weighted: false,
+    guaranteesShortestPath: false,
+  },
+  {
+    name: "Dijkstra's Algorithm",
+    func: dijkstra,
+    description:
+      "Dijkstra's Algorithm finds the shortest path between nodes in a graph, which may represent, for example, road networks.",
+    weighted: true,
+    guaranteesShortestPath: true,
+  },
+  {
+    name: "Greedy Best First Search",
+    func: greedyBFS,
+    description:
+      "Greedy Best-First Search is a search algorithm that selects the path which appears to be the best at that moment. It is the combination of depth-first and breadth-first search algorithms.",
+    weighted: false,
+    guaranteesShortestPath: false,
+  },
+  {
+    name: "Jump Point Search",
+    func: jumpPointSearch,
+    description:
+      'Jump Point Search is an optimization of the A* search algorithm, reducing its overhead by "jumping" over certain nodes in the search space.',
+    weighted: true,
+    guaranteesShortestPath: true,
+  },
 ];
+
+export { algorithms };

@@ -5,7 +5,6 @@ import React, {
   SetStateAction,
   createContext,
   useContext,
-  useEffect,
   useState,
 } from "react";
 
@@ -32,12 +31,8 @@ export const GridContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [grid, setGrid] = useState<NodeType[][]>([]);
+  const [grid, setGrid] = useState<NodeType[][]>(getInitialGrid());
   const [didResetGrid, setDidResetGrid] = useState(false);
-
-  useEffect(() => {
-    setGrid(getInitialGrid());
-  }, []);
 
   return (
     <GridContext.Provider

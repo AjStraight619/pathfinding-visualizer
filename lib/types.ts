@@ -38,4 +38,7 @@ export type Algorithm = {
     allowDiagonal: boolean,
     beamWidth?: number
   ) => NodeType[];
+  weighted: boolean;
+  guaranteesShortestPath: boolean;
+  description: string;
 };
